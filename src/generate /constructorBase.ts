@@ -28,7 +28,7 @@ export function generateConstructorDisposable(): vscode.Disposable {
         console.log("constructorName is ", constructorName);
 
         // 3. Get variables bottom index in classContent(current constructor or function's top)
-        const regexpForVariablesBottom = /((@override\s?\n)*(([\w\d_ ]+) )?[\w\d]+\([_\w\s\d]*\s?[_\w\d\s]*\) ?{)/g;
+        const regexpForVariablesBottom = /((@override\s?\n)*(([\w\d_ ]+) )?[\w\d]+\([_\w\s\d]*\s?[_\w\d\s]*\) *(=>\s?[_\w\d]+\(['"\w\d_\(\)]*\);\n?|\s*{))/g;
         const matchForVariablesBottom = regexpForVariablesBottom.exec(information.classContent);
         let variablesBottomIndex = information.classContent.length;
         if (matchForVariablesBottom !== null) {
