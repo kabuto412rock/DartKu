@@ -4,6 +4,9 @@ import { format } from 'path';
 
 export function generateOverrideDisposable(): vscode.Disposable {
     let disposable = vscode.commands.registerCommand("extension.overrideMethods", () => {
+        // Works below can't work in preview mode
+        vscode.commands.executeCommand("workbench.action.files.save");
+
         // 1. Get information include the class's range and class scope string in the document
         let information = getClassInformationFromEditorCursor();
 
@@ -19,8 +22,6 @@ export function generateOverrideDisposable(): vscode.Disposable {
             return;
         }
         extension.activate().then(async function () {
-            // Works below can't work in preview mode
-            await vscode.commands.executeCommand("workbench.action.files.save");
             await vscode.commands.executeCommand("dart.goToSuper").then(async function () {
 
                 let superClassInformation = getClassInformationFromEditorCursor();
