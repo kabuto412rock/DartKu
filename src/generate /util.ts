@@ -19,7 +19,7 @@ export function setCursorInCurrentTextEditor(newPosition: Position) {
     var newSelection = new Selection(newCursorPosition, newCursorPosition);
     editor.selection = newSelection;
 }
-export function getClassRangeFromEditor(): ClassCotentInformation | null{
+export function getClassInformationFromEditorCursor(): ClassCotentInformation | null{
     
     if (window.visibleTextEditors.length < 1) {
         window.showWarningMessage("You don't have any texteditor in your workspace.😢");

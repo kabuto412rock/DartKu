@@ -1,22 +1,13 @@
 
 
 import * as vscode from 'vscode';
-import { getClassRangeFromEditor, setCursorInCurrentTextEditor, jsonCopy } from './util';
+import { getClassInformationFromEditorCursor, setCursorInCurrentTextEditor, jsonCopy } from './util';
 
 // TODO: generate the class's constructor in the Dart.
 export function generateConstructorDisposable(): vscode.Disposable {
     let disposable = vscode.commands.registerCommand("extension.generateConstructor", () => {
-        let dartCodeExtension = vscode.extensions.getExtension("dart-code.dart-code");
-
-        // 😊Try to use Dart Code's extensions but for now this is not important...
-        // if (dartCodeExtension===null || dartCodeExtension?.isActive === false) {
-        //     vscode.window.showErrorMessage("DarKu dependencies Dart extension by Dart Code");
-        //     return;
-        // }
-        // vscode.commands.executeCommand("dart.goToSuper");
-
-        // 1. Get the class's range and string in the document
-        let information = getClassRangeFromEditor();
+        // 1. Get information include the class's range and class scope string in the document
+        let information = getClassInformationFromEditorCursor();
 
         if (information === null) {
             vscode.window.showErrorMessage("Where is the Class?I can't find it.");
@@ -37,7 +28,7 @@ export function generateConstructorDisposable(): vscode.Disposable {
         console.log("constructorName is ", constructorName);
 
         // 3. Get variables bottom index in classContent(current constructor or function's top)
-        const regexpForVariablesBottom = /(([\w]+) )?[\w\d]+\(\) ?{/g;
+        const regexpForVariablesBottom = /((@override\s?\n)*(([\w\d_ ]+) )?[\w\d]+\([_\w\s\d]*\s?[_\w\d\s]*\) ?{)/g;
         const matchForVariablesBottom = regexpForVariablesBottom.exec(information.classContent);
         let variablesBottomIndex = information.classContent.length;
         if (matchForVariablesBottom !== null) {
