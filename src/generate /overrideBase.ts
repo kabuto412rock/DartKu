@@ -5,8 +5,9 @@ import { format } from 'path';
 export function generateOverrideDisposable(): vscode.Disposable {
     let disposable = vscode.commands.registerCommand("extension.overrideMethods", () => {
         // Works below can't work in preview mode
-        vscode.commands.executeCommand("workbench.action.files.save");
-
+        // vscode.commands.executeCommand("workbench.action.files.save");
+ 
+        vscode.commands.executeCommand("workbench.action.keepEditor");
         // 1. Get information include the class's range and class scope string in the document
         let information = getClassInformationFromEditorCursor();
 
