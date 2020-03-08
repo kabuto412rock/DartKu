@@ -65,7 +65,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     // Find strings that match pattern like "class ... {" in all text string.
     // 找到所有符合"class ... {"
     // const allMatchArray = allText.match(/class .+{/g);
-    const classRe = /(abstract class|class)\s([_\w\d\s]+)?(<([_\w\d\s,]+)>)?(\sextends\s<?([_<>,\w\d\s]+))>??\s?(implements\s(([_<>\w\d\s]+),?)+)?\s?{\n?/g;
+    const classRe = /(abstract class|class)\s([_\w\d]+)?(<([_\w\d\s,]+)>)?(\sextends\s(<?[_<>,\w\d\s]+)>?)?\s?(implements\s(([_<>\w\d\s]+),?)+)?\s?{\n?/g;
     const cursorIndex = editor.document.offsetAt(newCursorPosition);
     let classCount = 0;
     let startIndex = 0;
