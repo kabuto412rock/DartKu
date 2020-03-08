@@ -73,13 +73,13 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     let endIndex = 0;
     let isClassFind: boolean = false;
     let match;
+    let realClassName: string = "";
     console.log("\n\n@@@@@@@@@@@@");
     while ((match = classRe.exec(allText)) !== null) {
         let bracketScore = 0;
         let matchClassName = match[2];
         console.log("matchClassName:", matchClassName);
         realStartIndex = match.index;
-
         startIndex = allText.indexOf('{', realStartIndex);
         bracketScore = 0;
         for (let index = startIndex; index < allText.length; index++) {
@@ -105,11 +105,9 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
         if (cursorIndex >= realStartIndex && cursorIndex <= endIndex) {
             // find the class's range
             let realStartPosition = editor.document.positionAt(realStartIndex);
-            console.log("realStatIndex:", realStartIndex, ", line:", realStartPosition.line, ", char:", realStartPosition.character);
-
-
+            console.log("realStatIndex:", realStartIndex, ", line:", realStartPosition.line, ", char:", realStartPosition.character);            
             console.log("符合條件:", cursorIndex, " >= ", realStartIndex, " && ", cursorIndex, " <= ", endIndex);
-
+            realClassName = matchClassName;
             isClassFind = true;
             break;
         } else {
@@ -133,28 +131,19 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     }
     let classContent = allText.substring(realStartIndex, endIndex);
     // 印出cursor所在的Class內容範圍
-    // console.log(classContent);
+    console.log(classContent);
 
-    const bracketStartIndex = classContent.indexOf("{");
-    const regexp = /class\s(([_\w\d]+)\s?(<[,\s\w\d]+>)?)(\sextends\s([_<>,\w\d\s]+))?\s?(implements\s(([_<>\w\d\s]+),?)+)?\s?{\n?/g;
-    const matchClassName = regexp.exec(classContent);
-
-    if (matchClassName === null) {
-        console.log("%match is null...");
-        return null;
-    }
-    const className = matchClassName[2];
     return {
         startPosition: editor.document.positionAt(realStartIndex),
         endPosition: editor.document.positionAt(endIndex),
         classContent: classContent,
-        className: className,
+        className: realClassName,
     };
 
 }
 
 export function getMethodInformationFromClassContent(classContent: string) {
-    let methodRe = /(([_\w\d]+)\s+([_\w\d]+)\s*\(([_\w\d\s]*,?)*\))/g
+    let methodRe = /(([_\w\d]+)\s+([_\w\d]+)\s*\(([_\w\d\s]*,?)*\))/g;
     let match: RegExpExecArray | null;
 
     // Regular Expression Result just like below

@@ -13,19 +13,10 @@ export function generateConstructorDisposable(): vscode.Disposable {
             vscode.window.showErrorMessage("Where is the Class?I can't find it.");
             return;
         }
-        // 2. Show the class code that correspond to your cursor
+        // 2. Show the class code content and class name
         console.log(information.classContent);
-        const bracketStartIndex = information.classContent.indexOf("{");
-        const regexp = /class\s([_\w\d]+)(\sextends\s(.+))?\s?(implements\s(([_<>\w\d\s]+),?)+)?\s?{\n?/g;
-        const match = regexp.exec(information.classContent);
-
-        if (match === null) {
-            console.log("match is null...");
-            return;
-        }
-        const constructorName = match[1];
-        vscode.window.showInformationMessage("constructorName is ", constructorName);
-        console.log("constructorName is ", constructorName);
+        vscode.window.showInformationMessage("class name is ", information.className);
+        console.log("class name is ", information.className);
 
         // 3. Get variables bottom index in classContent(current constructor or function's top)
         const regexpForVariablesBottom = /((@override\s?\n)*(([\w\d_ ]+) )?[\w\d]+\([_\w\s\d]*\s?[_\w\d\s]*\) *(=>\s?[_\w\d]+\(['"\w\d_\(\)]*\);\n?|\s*{))/g;
@@ -56,7 +47,7 @@ export function generateConstructorDisposable(): vscode.Disposable {
         console.log();
 
         // 6. Create new constructor boilerplate string
-        var constructorContentTemplate = "\n"+constructorName + "(";
+        var constructorContentTemplate = "\n"+information.className + "(";
         if (classVariables.length > 0) {
             constructorContentTemplate += "{";
             classVariables.forEach(element => {
