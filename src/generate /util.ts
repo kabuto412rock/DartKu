@@ -79,7 +79,6 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     while ((match = classRe.exec(allText)) !== null) {
         let bracketScore = 0;
         let matchClassName = match[2];
-        console.log("matchClassName:", matchClassName);
         realStartIndex = match.index;
         startIndex = allText.indexOf('{', realStartIndex);
         bracketScore = 0;
@@ -109,8 +108,17 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
             console.log("realStatIndex:", realStartIndex, ", line:", realStartPosition.line, ", char:", realStartPosition.character);            
             console.log("符合條件:", cursorIndex, " >= ", realStartIndex, " && ", cursorIndex, " <= ", endIndex);
             realClassName = matchClassName;// Just this class's name
-            realExtendString = match[6];// looks like "extends someClass123"
-            realImplementString = match[7];// looks like "implements aClass, bClass"
+            if (match[6] !== undefined) {
+                realExtendString = match[6].trim();// looks like "extends someClass123"
+            }
+            if (match[7] !== undefined) {
+                realImplementString = match[7].trim();// looks like "implements aClass, bClass"
+            }
+            console.log("realClassName:'", realClassName, "'");
+            console.log("realExtendString:'", realExtendString, "'");
+            
+            console.log("realImplementString:'", realImplementString, "'");
+
             isClassFind = true;
             break;
         } else {
