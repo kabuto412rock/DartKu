@@ -6,5 +6,5 @@ import { generateOverrideDisposable } from './generate /overrideBase';
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         generateConstructorDisposable(),// work
-        generateOverrideDisposable());// current not work...
+        generateOverrideDisposable(context));// current not work...
 }

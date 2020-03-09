@@ -160,7 +160,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
 
 }
 
-export function getMethodInformationFromClassContent(classContent: string) {
+export function getMethodInformationFromClassContent(classContent: string): string[] {
     let methodRe = /((@override\s))?([\w\d<,>]*)\s([a-zA-Z0-9\d]+)\(([\w\d\s,\.]+)?\)(\s?{|\s?=>[\s_\w\d]*|;)+/g;
     let match: RegExpExecArray | null;
 
@@ -170,6 +170,7 @@ export function getMethodInformationFromClassContent(classContent: string) {
        METHOD_NAME: $3
        PARAMETER:(parmerType parameterName):$4 
     */
+    let methodTemplateList: string[] = [];
     while ((match = methodRe.exec(classContent)) !== null) {
         let overrideText = match[2];
         let methodReturnType = match[3];
@@ -180,17 +181,24 @@ export function getMethodInformationFromClassContent(classContent: string) {
             case "throw":
             case "new":
             case "const":
-                console.log("不合格的方法:",methodName);
+                console.log("不合格的方法:", methodName);
                 continue;
             default:
-                console.log("合格的方法:",methodName);
+                console.log("合格的方法:", methodName);
         }
         // console.log("Maybe@:", overrideText);
         // console.log("RETURN_TYPE:", methodReturnType);
         // console.log("METHOD_NAME:", methodName);
         // console.log("PARAMETER:", methodParameters);
         // console.log("TAIL:", methodTail);
-        console.log("組合:"+methodReturnType + " "+ methodName+"("+methodParameters+"){}");
-        console.log("\n");
+        let combineMethodTemplate = methodReturnType + " " + methodName;
+        combineMethodTemplate += "(";
+        if (methodParameters !== undefined) {
+            combineMethodTemplate += methodParameters;
+        }
+        combineMethodTemplate += "){}";
+
+        methodTemplateList.push(combineMethodTemplate);
     }
+    return methodTemplateList;
 }

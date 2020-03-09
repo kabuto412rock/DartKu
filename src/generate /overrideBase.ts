@@ -2,8 +2,9 @@ import * as vscode from 'vscode';
 import { getMethodInformationFromClassContent, getClassInformationFromEditorCursor, setCursorInCurrentTextEditor, jsonCopy } from './util';
 import { format } from 'path';
 import { stringify } from 'querystring';
+import { downloadAndUnzipVSCode } from 'vscode-test';
 
-export function generateOverrideDisposable(): vscode.Disposable {
+export function generateOverrideDisposable(context: vscode.ExtensionContext): vscode.Disposable {
     let disposable = vscode.commands.registerCommand("extension.overrideMethods", async function () {
         // 0. Keep Editor or your current edit will be broken by command "goToSuper".
         await vscode.commands.executeCommand("workbench.action.keepEditor");
@@ -54,7 +55,7 @@ export function generateOverrideDisposable(): vscode.Disposable {
             }
             if (isSuperClassSameFile) {
                 let editor = vscode.window.activeTextEditor;
-                
+
                 if (editor === undefined) {
                     vscode.window.showErrorMessage("You should install the extension 'Dart' from 'Dart Code'");
                     return;
@@ -65,7 +66,7 @@ export function generateOverrideDisposable(): vscode.Disposable {
             }
             let superClassInformation = getClassInformationFromEditorCursor();
             if (superClassInformation === null) {
-                vscode.window.showErrorMessage("Super class is not really open... Maybe you should try to issue or fork author's project solve this by yourself.")
+                vscode.window.showErrorMessage("Super class is not really open... Maybe you should try to issue or fork author's project solve this by yourself.");
                 return;
             }
             if (!isSuperClassSameFile) {
@@ -73,16 +74,23 @@ export function generateOverrideDisposable(): vscode.Disposable {
             }
             // console.log("#class@", superClassInformation.className);
             // console.log("#class#", superClassInformation.classContent);
-            getMethodInformationFromClassContent(superClassInformation.classContent);
+            let methodsTemplateList = getMethodInformationFromClassContent(superClassInformation.classContent);
+
+            // show simple override Hint(work but i want to split the window &put it right!)
+            vscode.workspace.openTextDocument({
+                content: methodsTemplateList.join("\n"),
+                language: "dart",
+            }).then((doc) => {
+                vscode.window.showTextDocument(doc, {
+                    viewColumn: vscode.ViewColumn.Two
+                });
+            });
 
         });
-
-        //  
         vscode.window.showInformationMessage("DartKu: OverrideMethods");
 
     });
     return disposable;
 }
 
-async function handleOverride(isSuperClassInSameFile: boolean) {
-}
+
