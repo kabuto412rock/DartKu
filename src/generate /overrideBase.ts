@@ -71,8 +71,8 @@ export function generateOverrideDisposable(): vscode.Disposable {
             if (!isSuperClassSameFile) {
                 await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
             }
-            console.log("#class@", superClassInformation.className);
-            console.log("#class#", superClassInformation.classContent);
+            // console.log("#class@", superClassInformation.className);
+            // console.log("#class#", superClassInformation.classContent);
             getMethodInformationFromClassContent(superClassInformation.classContent);
 
         });

@@ -81,7 +81,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     let resultImplementString: string = "";
 
     let allMatchClassNames;
-    console.log("\n\n@@@@@@@@@@@@");
+
     while ((match = classRe.exec(allText)) !== null) {
         let bracketScore = 0;
         let matchClassName = match[2];
@@ -109,14 +109,14 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
             }
         }
 
-        console.log("cursorIndex = " + cursorIndex + " realStartIndex=" + realStartIndex + ", realEndIndex=" + realEndIndex);
-        let cursorPosition = editor.document.positionAt(cursorIndex);
-        console.log("line:", cursorPosition.line, ", char:", cursorPosition.character);
-        if (cursorIndex >= realStartIndex && cursorIndex <= realEndIndex &&isClassFind === false) {
+        // console.log("cursorIndex = " + cursorIndex + " realStartIndex=" + realStartIndex + ", realEndIndex=" + realEndIndex);
+        // let cursorPosition = editor.document.positionAt(cursorIndex);
+        // console.log("line:", cursorPosition.line, ", char:", cursorPosition.character);
+        if (cursorIndex >= realStartIndex && cursorIndex <= realEndIndex && isClassFind === false) {
             // find the class's range
             let realStartPosition = editor.document.positionAt(realStartIndex);
-            console.log("realStatIndex:", realStartIndex, ", line:", realStartPosition.line, ", char:", realStartPosition.character);            
-            console.log("符合條件:", cursorIndex, " >= ", realStartIndex, " && ", cursorIndex, " <= ", realEndIndex);
+            // console.log("realStatIndex:", realStartIndex, ", line:", realStartPosition.line, ", char:", realStartPosition.character);
+            // console.log("符合條件:", cursorIndex, " >= ", realStartIndex, " && ", cursorIndex, " <= ", realEndIndex);
             resultClassName = matchClassName;// Just this class's name
             if (match[6] !== undefined) {
                 resultExtendString = match[6].trim();// looks like "extends someClass123"
@@ -126,15 +126,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
             }
             resultStartIndex = realStartIndex;
             resultEndIndex = realEndIndex;
-            console.log("resultClassName:'", resultClassName, "'");
-            console.log("resultExtendString:'", resultExtendString, "'");
-            console.log("resultImplementString:'", resultImplementString, "'");
             isClassFind = true;
-        } else {
-            console.log("不符合條件:", cursorIndex, " >= ", realStartIndex, " && ", cursorIndex, " <= ", realEndIndex);
-            console.log("XresultClassName:'", resultClassName, "'");
-            console.log("XresultExtendString:'", resultExtendString, "'");
-            console.log("XresultImplementString:'", resultImplementString, "'");
         }
 
 
@@ -152,9 +144,9 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
         return null;
     }
     let classContent = allText.substring(resultStartIndex, resultEndIndex);
-    // 印出cursor所在的Class內容範圍
-    console.log("@@classContent@@\n",classContent);
-    
+    // // 印出cursor所在的Class內容範圍
+    // console.log("@@classContent@@\n", classContent);
+
     return {
         startPosition: editor.document.positionAt(resultStartIndex),
         endPosition: editor.document.positionAt(resultEndIndex),
@@ -169,7 +161,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
 }
 
 export function getMethodInformationFromClassContent(classContent: string) {
-    let methodRe = /(([_\w\d]+)\s+([_\w\d]+)\s*\(([_\w\d\s]*,?)*\))/g;
+    let methodRe = /((@override\s))?([\w\d<,>]*)\s([a-zA-Z0-9\d]+)\(([\w\d\s,\.]+)?\)(\s?{|\s?=>[\s_\w\d]*|;)+/g;
     let match: RegExpExecArray | null;
 
     // Regular Expression Result just like below
@@ -179,10 +171,26 @@ export function getMethodInformationFromClassContent(classContent: string) {
        PARAMETER:(parmerType parameterName):$4 
     */
     while ((match = methodRe.exec(classContent)) !== null) {
-        console.log("All:", match[1]);
-        console.log("RETURN_TYPE:", match[2]);
-        console.log("METHOD_NAME:", match[3]);
-        console.log("PARAMETER:", match[4]);
+        let overrideText = match[2];
+        let methodReturnType = match[3];
+        let methodName = match[4];
+        let methodParameters = match[5];
+        let methodTail = match[6];
+        switch (methodReturnType) {
+            case "throw":
+            case "new":
+            case "const":
+                console.log("不合格的方法:",methodName);
+                continue;
+            default:
+                console.log("合格的方法:",methodName);
+        }
+        // console.log("Maybe@:", overrideText);
+        // console.log("RETURN_TYPE:", methodReturnType);
+        // console.log("METHOD_NAME:", methodName);
+        // console.log("PARAMETER:", methodParameters);
+        // console.log("TAIL:", methodTail);
+        console.log("組合:"+methodReturnType + " "+ methodName+"("+methodParameters+"){}");
         console.log("\n");
     }
 }
