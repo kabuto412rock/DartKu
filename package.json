@@ -1,7 +1,7 @@
 {
 	"name": "dartku",
 	"displayName": "DartKu",
-	"description": "Constructor gernerator for dart lang",
+	"description": "Generate simply Constructor&Override for Dart",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.42.0"

@@ -23,6 +23,8 @@ export type ClassCotentInformation = {
     endPosition: Position,
     classContent: string,
     className: string,
+    extendString: string,
+    implementString: string,
 };
 
 export function setCursorInCurrentTextEditor(newPosition: Position) {
@@ -52,20 +54,16 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
         console.log("%Please put your cursor in text editor that you want to innsert your constructor's position .👿");
         return null;
     }
-    window.showInformationMessage("Your current cursor 's line position is " + currentCursor.line.toString());
     var newCursorPosition = currentCursor.with(currentCursor.line, 0);
     var newSelection = new Selection(newCursorPosition, newCursorPosition);
     editor.selection = newSelection;
 
-    // Current cursor's position 當前的游標位置
-    const chPosition = newCursorPosition.character.toString();
-    window.showInformationMessage("Your current cursor 's char is " + chPosition);
     const allText = editor.document.getText();
 
     // Find strings that match pattern like "class ... {" in all text string.
     // 找到所有符合"class ... {"
     // const allMatchArray = allText.match(/class .+{/g);
-    const classRe = /(abstract class|class)\s([_\w\d]+)?(<([_\w\d\s,]+)>)?(\sextends\s(<?[_<>,\w\d\s]+)>?)?\s?(implements\s(([_<>\w\d\s]+),?)+)?\s?{\n?/g;
+    const classRe = /(abstract class|class)\s([_\w\d]+)?(<([_\w\d\s,]+)>)?(\s*extends\s(<?[_<>,\w\d]+)>?)?\s*(implements\s(([_<>\w\d]+)\s?,?)+)?\s*{\n?/g;
     const cursorIndex = editor.document.offsetAt(newCursorPosition);
     let classCount = 0;
     let startIndex = 0;
@@ -74,6 +72,9 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     let isClassFind: boolean = false;
     let match;
     let realClassName: string = "";
+    let realExtendString: string = "";
+    let realImplementString: string = "";
+    let allMatchClassNames;
     console.log("\n\n@@@@@@@@@@@@");
     while ((match = classRe.exec(allText)) !== null) {
         let bracketScore = 0;
@@ -107,7 +108,9 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
             let realStartPosition = editor.document.positionAt(realStartIndex);
             console.log("realStatIndex:", realStartIndex, ", line:", realStartPosition.line, ", char:", realStartPosition.character);            
             console.log("符合條件:", cursorIndex, " >= ", realStartIndex, " && ", cursorIndex, " <= ", endIndex);
-            realClassName = matchClassName;
+            realClassName = matchClassName;// Just this class's name
+            realExtendString = match[6];// looks like "extends someClass123"
+            realImplementString = match[7];// looks like "implements aClass, bClass"
             isClassFind = true;
             break;
         } else {
@@ -125,8 +128,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     }
 
     if (isClassFind === false || match === null) {
-        window.showWarningMessage("沒有找到對應的class, Sorry");
-        console.log("%沒有找到對應的class, Sorry, isClassFind:", isClassFind, ",match:", match);
+        // console.log("%沒有找到對應的class, Sorry, isClassFind:", isClassFind, ",match:", match);
         return null;
     }
     let classContent = allText.substring(realStartIndex, endIndex);
@@ -138,6 +140,8 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
         endPosition: editor.document.positionAt(endIndex),
         classContent: classContent,
         className: realClassName,
+        extendString: realExtendString,
+        implementString: realImplementString,
     };
 
 }

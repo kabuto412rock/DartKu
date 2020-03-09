@@ -3,11 +3,11 @@ import { getMethodInformationFromClassContent, getClassInformationFromEditorCurs
 import { format } from 'path';
 
 export function generateOverrideDisposable(): vscode.Disposable {
-    let disposable = vscode.commands.registerCommand("extension.overrideMethods", () => {
+    let disposable = vscode.commands.registerCommand("extension.overrideMethods", async function() {
         // Works below can't work in preview mode
         // vscode.commands.executeCommand("workbench.action.files.save");
  
-        vscode.commands.executeCommand("workbench.action.keepEditor");
+        await vscode.commands.executeCommand("workbench.action.keepEditor");
         // 1. Get information include the class's range and class scope string in the document
         let information = getClassInformationFromEditorCursor();
 
@@ -22,6 +22,7 @@ export function generateOverrideDisposable(): vscode.Disposable {
             vscode.window.showErrorMessage("You should install the extension 'Dart' from 'Dart Code'");
             return;
         }
+        
         extension.activate().then(async function () {
             await vscode.commands.executeCommand("dart.goToSuper").then(async function () {
 
@@ -44,4 +45,7 @@ export function generateOverrideDisposable(): vscode.Disposable {
 
     });
     return disposable;
+}
+
+async function handleOverride(isSuperClassInSameFile: boolean){
 }
