@@ -29,4 +29,4 @@ You input "int a;double b=3.3;"and confirm then your editor will insert
 ![DartKu Quick picker.gif](https://media.giphy.com/media/KCN84aNngaNwR39W3B/giphy.gif)
 ### Whatever
 this extension isn't worth to install and my english is too terriable to understand your any quesion, Haha.
-But i will do my best to understand😎 even it's 💩.
+But i will do my best to understand😎 even my english levels likes 💩.
