@@ -1,5 +1,6 @@
 # DartKu 
-the code  generate for Dart lang, i created it just for fun, so don't expect this extension can help you(even me😂).
+This is a VSCode extension.
+the code generate for Dart lang, i created it just for fun, so don't expect this extension can help you(even me😂).
 ## Features
 1. generate a simple constructor code
    
