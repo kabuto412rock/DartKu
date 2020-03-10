@@ -16,27 +16,31 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.generateConstructor",
+				"command": "DartKu.generateConstructor",
 				"title": "DartKu: Generate Constructor"
 			},
 			{
-				"command": "extension.showSuperClassIWant",
+				"command": "DartKu.showSuperClassIWant",
 				"title": "DartKu: Show Super class😊"
 			}
-			
+			,{
+				"command": "DartKu.generateFinalVariableInput",
+				"title": "DartKu: Generate Final Varaible from input"
+			}
+			,{
+				"command": "DartKu.quickPickDartKu",
+				"title": "DartKu: quick pick"
+			}
 			
 		],
 		"menus": {
 			"editor/context": [{
+				
 				"when": "resourceLangId == dart",
-				"command": "extension.generateConstructor",
-				"group": "DartKu"
-			},
-			{
-				"when": "resourceLangId == dart",
-				"command": "extension.showSuperClassIWant",
+				"command": "DartKu.quickPickDartKu",
 				"group": "DartKu"
 			}
+			
 		]
 		}
 	},

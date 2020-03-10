@@ -5,7 +5,7 @@ import { stringify } from 'querystring';
 import { downloadAndUnzipVSCode } from 'vscode-test';
 
 export function generateOverrideDisposable(context: vscode.ExtensionContext): vscode.Disposable {
-    let disposable = vscode.commands.registerCommand("extension.overrideMethods", async function () {
+    let disposable = vscode.commands.registerCommand("DartKu.overrideMethods", async function () {
         // 0. Keep Editor or your current edit will be broken by command "goToSuper".
         await vscode.commands.executeCommand("workbench.action.keepEditor");
 
