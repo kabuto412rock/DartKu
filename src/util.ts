@@ -48,8 +48,10 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
         console.log("%You don't have any texteditor in your workspace.😢");
         return null;
     }
-    const editor = window.visibleTextEditors[0];
-
+    const editor = window.activeTextEditor;
+    if (editor === undefined) {
+        return null;
+    }
     var currentCursor = editor.selection.active;
     if (currentCursor === null) {
         window.showWarningMessage("Please put your cursor in text editor that you want to innsert your constructor's position .👿");
@@ -66,7 +68,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
     // Find strings that match pattern like "class ... {" in all text string.
     // 找到所有符合"class ... {"
     // const allMatchArray = allText.match(/class .+{/g);
-    const classRe = /(abstract class|class)\s([_\w\d]+)?(<([_\w\d\s,]+)>)?(\s*extends\s(<?[_<>,\w\d]+)>?)?\s*(implements\s(([_<>\w\d]+)\s?,?)+)?\s*{\n?/g;
+    const classRe = /\n[/\s]*(abstract class|class)\s([_\w\d]+)?(<([_\w\d\s,]+)>)?(\s*extends\s(<?[_<>,\w\d]+)>?)?\s*(implements\s(([_<>\w\d]+)\s?,?)+)?\s*{\n?/g;
     const cursorIndex = editor.document.offsetAt(newCursorPosition);
     let classCount = 0;
     let realStartIndex = 0;
@@ -86,7 +88,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
         let bracketScore = 0;
         let matchClassName = match[2];
         // add my class names
-        allClassNames.push(matchClassName);
+        allClassNames.push(matchClassName.trim());
 
         realStartIndex = match.index;
         let startIndex = allText.indexOf('{', realStartIndex);
@@ -161,7 +163,7 @@ export function getClassInformationFromEditorCursor(): ClassCotentInformation | 
 }
 
 export function getMethodInformationFromClassContent(classContent: string): string[] {
-    let methodRe = /((@override\s))?([\w\d<,>]*)\s([a-zA-Z0-9\d]+)\(([\w\d\s,\.]+)?\)(\s?{|\s?=>[\s_\w\d]*|;)+/g;
+    let methodRe = /(@override\s*\n+\s+)?([\w\d<]+[\w\d,]+[\w\d>]+)\s+([\w\d]+[\w\d,<>]*[\w\d]+)\(([\w\d]*[,\w\d]*)\)\s*(=>|{|;)/g;
     let match: RegExpExecArray | null;
 
     // Regular Expression Result just like below
@@ -172,11 +174,11 @@ export function getMethodInformationFromClassContent(classContent: string): stri
     */
     let methodTemplateList: string[] = [];
     while ((match = methodRe.exec(classContent)) !== null) {
-        let overrideText = match[2];
-        let methodReturnType = match[3];
-        let methodName = match[4];
-        let methodParameters = match[5];
-        let methodTail = match[6];
+        let overrideText = match[1].trim();
+        let methodReturnType = match[2];
+        let methodName = match[3];
+        let methodParameters = match[4];
+        let methodTail = match[5];
         switch (methodReturnType) {
             case "throw":
             case "new":

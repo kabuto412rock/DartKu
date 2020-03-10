@@ -1,7 +1,7 @@
 
 
 import * as vscode from 'vscode';
-import { getClassInformationFromEditorCursor, setCursorInCurrentTextEditor, jsonCopy } from './util';
+import { getClassInformationFromEditorCursor, setCursorInCurrentTextEditor, jsonCopy } from '../util';
 
 // TODO: generate the class's constructor in the Dart.
 export function generateConstructorDisposable(): vscode.Disposable {
@@ -14,9 +14,9 @@ export function generateConstructorDisposable(): vscode.Disposable {
             return;
         }
         // 2. Show the class code content and class name
-        console.log(information.classContent);
-        vscode.window.showInformationMessage("class name is ", information.className);
-        console.log("class name is ", information.className);
+        // console.log(information.classContent);
+        // vscode.window.showInformationMessage("class name is ", information.className);
+        // console.log("class name is ", information.className);
 
         // 3. Get variables bottom index in classContent(current constructor or function's top)
         const regexpForVariablesBottom = /((@override\s?\n)*(([\w\d_ ]+) )?[\w\d]+\([_\w\s\d]*\s?[_\w\d\s]*\) *(=>\s?[_\w\d]+\(['"\w\d_\(\)]*\);\n?|\s*{))/g;
@@ -42,9 +42,9 @@ export function generateConstructorDisposable(): vscode.Disposable {
         }
         for (let index = 0; index < classVariables.length; index++) {
             const element = classVariables[index];
-            console.log("classVariables[" + index + "]: type=", element[0], ", name=", element[1]);
+            // console.log("classVariables[" + index + "]: type=", element[0], ", name=", element[1]);
         }
-        console.log();
+        // console.log();
 
         // 6. Create new constructor boilerplate string
         var constructorContentTemplate = "\n"+information.className + "(";
@@ -61,7 +61,7 @@ export function generateConstructorDisposable(): vscode.Disposable {
         let constructorContentTemplateEnd = "}\n";
 
         // 7. Get position for insert constructor into the code(Actually it's the vscode document)
-        console.log("constructorContentTemplate:\n", constructorContentTemplate);
+        // console.log("constructorContentTemplate:\n", constructorContentTemplate);
         if (vscode.window.activeTextEditor === undefined) {
             vscode.window.showErrorMessage("Your text editor already closed, I can't insert constructor into your dart file😢.");
             return;

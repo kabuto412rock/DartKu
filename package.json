@@ -20,20 +20,24 @@
 				"title": "DartKu: Generate Constructor"
 			},
 			{
-				"command": "extension.overrideMethods",
-				"title": "DartKu: Override Methods"
+				"command": "extension.showSuperClassIWant",
+				"title": "DartKu: Show Super class😊"
 			}
+			
+			
 		],
 		"menus": {
 			"editor/context": [{
 				"when": "resourceLangId == dart",
 				"command": "extension.generateConstructor",
 				"group": "DartKu"
-			},{
+			},
+			{
 				"when": "resourceLangId == dart",
-				"command": "extension.overrideMethods",
+				"command": "extension.showSuperClassIWant",
 				"group": "DartKu"
-			}]
+			}
+		]
 		}
 	},
 	"scripts": {

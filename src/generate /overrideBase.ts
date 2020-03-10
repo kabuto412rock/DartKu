@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getMethodInformationFromClassContent, getClassInformationFromEditorCursor, setCursorInCurrentTextEditor, jsonCopy } from './util';
+import { getMethodInformationFromClassContent, getClassInformationFromEditorCursor, setCursorInCurrentTextEditor, jsonCopy } from '../util';
 import { format } from 'path';
 import { stringify } from 'querystring';
 import { downloadAndUnzipVSCode } from 'vscode-test';
@@ -19,22 +19,22 @@ export function generateOverrideDisposable(context: vscode.ExtensionContext): vs
         // vscode.window.showInformationMessage("class name is", information.className);
 
         // TODO: Check the super class is in the same file or not
-        console.log("classNamesInThisFile:", information.classNamesInThisFile);
-        console.log("information.extendString:", information.extendString);
+        // console.log("classNamesInThisFile:", information.classNamesInThisFile);
+        // console.log("information.extendString:", information.extendString);
 
         let isSuperClassSameFile: boolean = false;
         let extendClassName: string;
         let extendClassNameIndex: number = 0;
         if (information.extendString !== "") {
             extendClassName = information.extendString;
-            console.log("Your extend class:'", extendClassName, "'");
+            // console.log("Your extend class:'", extendClassName, "'");
             information.classNamesInThisFile.forEach(someClass => {
 
             });
             information.classNamesInThisFile.forEach((someClass, index, arr) => {
-                console.log("Another claas in same file:'", someClass, "'");
+                // console.log("Another claas in same file:'", someClass, "'");
                 if (someClass === extendClassName) {
-                    console.log("同樣的");
+                    // console.log("同樣的");
                     isSuperClassSameFile = true;
                     if (information !== null) {
                         extendClassNameIndex = information.classNamesInThisFileIndices[index];
@@ -42,7 +42,7 @@ export function generateOverrideDisposable(context: vscode.ExtensionContext): vs
                 }
             });
         }
-        console.log("isSuperClassSameFile:", isSuperClassSameFile);
+        // console.log("isSuperClassSameFile:", isSuperClassSameFile);
         let extension = vscode.extensions.getExtension("dart-code.dart-code");
         if (extension === undefined || extension.isActive === false) {
             vscode.window.showErrorMessage("You should install the extension 'Dart' from 'Dart Code'");
@@ -87,7 +87,7 @@ export function generateOverrideDisposable(context: vscode.ExtensionContext): vs
             });
 
         });
-        vscode.window.showInformationMessage("DartKu: OverrideMethods");
+        vscode.window.showInformationMessage("DartKu: Override Hints(experimental)");
 
     });
     return disposable;
