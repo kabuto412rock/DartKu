@@ -3,7 +3,7 @@ the code  generate for Dart lang, i created it just for fun, so don't expect thi
 ## Features
 1. generate a simple constructor code
    
-2. 💩show super class document split window(this's an experimental feature and using [Dart](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code) command "goToSuper")
+2. 💩show super class document on the splited window(this's an experimental feature and using [Dart](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code) command "goToSuper")
 3. generate final variables code.
 ## Requirements
 You should allready installed extension [Dart](https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code) in VSCode.
