@@ -1,7 +1,7 @@
 {
 	"name": "dartku",
 	"displayName": "DartKu",
-	"description": "Generate simply Constructor&Override for Dart",
+	"description": "Generate simply Constructor for Dart",
 	"version": "0.7.0",
 	"publisher": "LazyLearn",
 	"engines": {
