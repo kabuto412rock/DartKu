@@ -2,7 +2,7 @@
 	"name": "dartku",
 	"displayName": "DartKu",
 	"description": "Generate simply Constructor for Dart",
-	"version": "0.8.0",
+	"version": "0.8.2",
 	"publisher": "LazyLearn",
 	"engines": {
 		"vscode": "^1.42.0"
