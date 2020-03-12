@@ -13,21 +13,21 @@ You should allready installed extension [Dart](https://marketplace.visualstudio.
 1. ##### DartKu.generateConstructor
 > Generate a simple constructor code
 > (It can't understand what is your super class)
-![The demo for Generate a simple constructor](https://media.giphy.com/media/J54FMEeYHxNZs4IvBF/giphy.gif)
+![The demo for Generate a simple constructor](./gif/DartKu_generateConstructor.gif)
 2. ##### DartKu.showSuperClassIWant
 > Show super class document and it will split the window, its performance just like💩
-![The demo for showing the super class](https://media.giphy.com/media/ftY36FHYLXMwwkdnJO/giphy.gif)
+![The demo for showing the super class](./gif/dartku_show_super_class.gif)
 3. ##### DartKu.generateFinalVariableInput
 > it will show a inputbox, then transform your input from [normal variable declartion] to [final variable decalration].
 Example:
 You input "int a;double b=3.3;"and confirm then your editor will insert
 "final int a;\n
  final double b=3.3;\n" into your code.
- ![final variable decalration.gif](https://media.giphy.com/media/Xc46tD5NVJqHpM4DLZ/giphy.gif)
+ ![final variable decalration.gif](./gif/finalVariableInout.gif)
 4. ##### DartKu.quickPickDartKu
 > Quick picker for the all DartKu commands.
 > (Now just three commands above)
-![DartKu Quick picker.gif](https://media.giphy.com/media/KCN84aNngaNwR39W3B/giphy.gif)
+![DartKu Quick picker.gif](./gif/DartKu_quickPickDartKu.gif)
 ### Whatever
 this extension isn't worth to install and my english is too terriable to understand your any quesion, Haha.
 But i will do my best to understand😎 even my english levels likes 💩.
