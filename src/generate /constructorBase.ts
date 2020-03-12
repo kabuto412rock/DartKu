@@ -35,7 +35,7 @@ export async function generateConstructor() {
     const classContentKeepVariables = information.classContent.substring(0, variablesBottomIndex);
 
     // 5. Get your class's variable type and name for new consturctor
-    const regexpForVariables = /([\w\d]+)[ ]?([a-zA-Z0-9]+)[ ]?(( ?= ?)(("?([ \d\.\w]+)?"?)|((new)? ?\_?[\d\w]+\(\))))?;\n?/g;
+    const regexpForVariables = /([\<\w\d\>]+)[ ]?([a-zA-Z0-9]+)[ ]?(( ?= ?)(("?([ \d\.\w]+)?"?)|((new)? ?\_?[\d\w]+\(\))))?;\n?/g;
     let classVariables: any[][] = [];
     let matchForVariable = regexpForVariables.exec(classContentKeepVariables);
     while (true) {
